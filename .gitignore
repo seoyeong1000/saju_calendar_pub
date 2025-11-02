@@ -59,3 +59,6 @@ Thumbs.db
 prompts/
 repomix-output.xml
 '@ | Set-Content -Encoding UTF8 .gitignore
+
+# clerk configuration (can include secrets)
+/.clerk/

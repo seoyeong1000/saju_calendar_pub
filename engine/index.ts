@@ -1,4 +1,3 @@
-// engine/index.ts
 import type { Engine } from "./engine.types";
 import { DateChineseEngine } from "./engine.date";
 import { SwissEngine } from "./engine.swiss";

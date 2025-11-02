@@ -35,6 +35,9 @@ export default function Home() {
             </Button>
           </Link>
         </div>
+        <div className="mt-6"><Link href="/bazi-test" className="inline-block px-4 py-2 rounded bg-black text-white">
+    사주 계산 테스트로 이동
+  </Link></div>
       </section>
     </main>
   );
