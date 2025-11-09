@@ -4,6 +4,7 @@ import { useState } from "react";
 export default function Page() {
   const [localISO, setLocalISO] = useState("2024-02-01T00:00:00");
   const [tzid, setTzid] = useState("Asia/Seoul");
+  const [lon, setLon] = useState<number | "">(""); // 경도(°E, 서경은 음수)
   const [out, setOut] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
@@ -11,10 +12,13 @@ export default function Page() {
     setLoading(true);
     setOut(null);
     try {
+      const body: any = { localISO, tzid };
+      if (lon !== "") body.lon = Number(lon);
+
       const r = await fetch("/api/bazi", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ localISO, tzid }),
+        body: JSON.stringify(body),
       });
       const j = await r.json();
       setOut(j);
@@ -24,89 +28,40 @@ export default function Page() {
   }
 
   return (
-    <div
-      style={{
-        maxWidth: 720,
-        margin: "40px auto",
-        fontFamily: "ui-sans-serif, system-ui",
-      }}
-    >
-      <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 16 }}>
-        Bazi Calc — SwissEph smoke
-      </h1>
+    <main className="max-w-3xl mx-auto px-4 py-8 space-y-6">
+      <h1 className="text-3xl font-bold">Bazi Calc — SwissEph smoke</h1>
 
-      <label>localISO</label>
-      <input
-        value={localISO}
-        onChange={(e) => setLocalISO(e.target.value)}
-        style={{
-          width: "100%",
-          padding: 8,
-          margin: "6px 0 12px 0",
-          border: "1px solid #ddd",
-          borderRadius: 8,
-        }}
-      />
+      <label className="block">
+        <div className="mb-1">localISO</div>
+        <input className="w-full border rounded px-3 py-2"
+          value={localISO} onChange={e=>setLocalISO(e.target.value)} />
+      </label>
 
-      <label>tzid</label>
-      <input
-        value={tzid}
-        onChange={(e) => setTzid(e.target.value)}
-        style={{
-          width: "100%",
-          padding: 8,
-          margin: "6px 0 12px 0",
-          border: "1px solid #ddd",
-          borderRadius: 8,
-        }}
-      />
+      <label className="block">
+        <div className="mb-1">tzid</div>
+        <input className="w-full border rounded px-3 py-2"
+          value={tzid} onChange={e=>setTzid(e.target.value)} />
+      </label>
+
+      <label className="block">
+        <div className="mb-1">경도 lon (동경=양수, 예: 서울 126.9784)</div>
+        <input className="w-full border rounded px-3 py-2"
+          placeholder="126.9784"
+          value={lon} onChange={e=>setLon(e.target.value as any)} />
+      </label>
 
       <button
         onClick={run}
         disabled={loading}
-        style={{
-          padding: "10px 16px",
-          borderRadius: 10,
-          border: "1px solid #222",
-          background: "#fff",
-          cursor: "pointer",
-        }}
+        className="px-4 py-2 border rounded"
       >
         {loading ? "계산 중..." : "계산하기"}
       </button>
 
-      {out && (
-        <div style={{ marginTop: 24 }}>
-          <h2 style={{ fontSize: 20, fontWeight: 700 }}>결과</h2>
-          <pre
-            style={{
-              whiteSpace: "pre-wrap",
-              background: "#f7f7f7",
-              padding: 12,
-              borderRadius: 8,
-            }}
-          >
-            {JSON.stringify(out, null, 2)}
-          </pre>
-          {out?.meta?.preview && (
-            <>
-              <h3 style={{ fontSize: 16, fontWeight: 700, marginTop: 8 }}>
-                swetest preview
-              </h3>
-              <pre
-                style={{
-                  whiteSpace: "pre-wrap",
-                  background: "#f0f0f0",
-                  padding: 12,
-                  borderRadius: 8,
-                }}
-              >
-                {out.meta.preview}
-              </pre>
-            </>
-          )}
-        </div>
-      )}
-    </div>
+      <h2 className="text-2xl font-bold">결과</h2>
+      <pre className="bg-gray-100 p-4 rounded overflow-auto">
+        {JSON.stringify(out, null, 2)}
+      </pre>
+    </main>
   );
 }
