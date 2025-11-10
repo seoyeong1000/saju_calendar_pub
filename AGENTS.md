@@ -57,7 +57,7 @@ pnpm lint
 3. **사용자 동기화**:
    - `hooks/use-sync-user.ts`: Clerk → Supabase 사용자 동기화 훅
    - `components/providers/sync-user-provider.tsx`: RootLayout에서 자동 실행
-   - `app/api/sync-user/route.ts`: 실제 동기화 로직 (API 라우트)
+   - `app/api/users/sync/route.ts`: 실제 동기화 로직 (API 라우트)
 
 ### Directory Convention
 
@@ -157,7 +157,7 @@ NEXT_PUBLIC_STORAGE_BUCKET=uploads
 
 - 가능하면 항상 Server Actions 사용 (`actions/` 디렉토리)
 - API Routes는 불가피한 경우에만 사용 (웹훅, 외부 API 등)
-- 현재 `/api/sync-user`는 기존 구조상 API Route로 구현됨
+- 현재 `/api/users/sync`는 기존 구조상 API Route로 구현됨
 
 ### UI Components
 
