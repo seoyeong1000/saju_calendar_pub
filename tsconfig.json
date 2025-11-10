@@ -1,12 +1,13 @@
+// /tsconfig.json (핵심만)
 {
   "compilerOptions": {
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
-    "noImplicitAny": false, // any 타입 허용
+    "noImplicitAny": false,
     "skipLibCheck": true,
-    "strict": false, // 엄격한 타입 검사 비활성화
-    "forceConsistentCasingInFileNames": false, // 파일 이름의 대소문자 일관성 비활성화
+    "strict": false,
+    "forceConsistentCasingInFileNames": false,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -15,14 +16,10 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "paths": {
-      "@/*": ["./*"]
-    }
+    "plugins": [{ "name": "next" }],
+
+    "baseUrl": ".",                 // ★ 추가
+    "paths": { "@/*": ["./*"] }     // 그대로 유지
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]

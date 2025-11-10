@@ -2,15 +2,16 @@
   "name": "saas-mini-course",
   "version": "0.1.0",
   "private": true,
-"scripts": {
-  "dev": "next dev --turbopack",
-  "build": "next build",
-  "start": "next start",
-  "lint": "next lint",
-  "typecheck": "tsc --noEmit",
-  "predev": "node -r dotenv/config scripts/check-env.mjs",
-  "prebuild": "node -r dotenv/config scripts/check-env.mjs"
-},
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "predev": "node scripts/check-env.mjs",
+    "prebuild": "node scripts/check-env.mjs",
+    "prepare": "husky"
+  },
   "dependencies": {
     "@clerk/backend": "^1.33.1",
     "@clerk/localizations": "^3.26.3",
@@ -19,10 +20,14 @@
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-label": "^2.1.7",
+    "@radix-ui/react-popover": "^1.1.15",
+    "@radix-ui/react-radio-group": "^1.3.8",
+    "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-slot": "^1.2.3",
     "@supabase/supabase-js": "^2.49.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
     "date-chinese": "^2.1.4",
     "lucide-react": "^0.511.0",
     "next": "15.5.6",
@@ -42,6 +47,7 @@
     "dotenv": "^17.2.3",
     "eslint": "^9",
     "eslint-config-next": "15.5.6",
+    "husky": "^9.0.11",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.0",
     "typescript": "^5"

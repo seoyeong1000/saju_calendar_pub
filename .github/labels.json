@@ -1,37 +1,62 @@
 [
   {
-    "name": "feature",
-    "color": "#38B745",
+    "name": "feat",
+    "color": "a2eeef",
     "description": "새로운 기능 추가"
   },
   {
     "name": "fix",
-    "color": "#E8535B",
+    "color": "d73a4a",
     "description": "버그 수정"
   },
   {
-    "name": "documentation",
-    "color": "#5E81AC",
-    "description": "문서 작업 (README, 주석 등)"
+    "name": "docs",
+    "color": "0075ca",
+    "description": "문서 작업"
   },
   {
     "name": "style",
-    "color": "#ECC84B",
-    "description": "코드 로직 영향 없는 스타일 변경 (whitespace, formatting 등)"
+    "color": "c5def5",
+    "description": "코드 스타일 수정"
   },
   {
     "name": "refactor",
-    "color": "#D66CB2",
-    "description": "기능 변화 없이 코드 구조 재구성 및 리팩토링"
+    "color": "7057ff",
+    "description": "코드 리팩토링"
   },
   {
     "name": "test",
-    "color": "#A3DC00",
-    "description": "기존 테스트 수정 및 누락된 테스트 추가"
+    "color": "bfe5bf",
+    "description": "테스트 코드 추가/수정"
   },
   {
     "name": "chore",
-    "color": "#9575CD",
-    "description": "코드 수정 없이 프로젝트 유지 보수 작업(빌드 설정, 패키지 업데이트 등)"
+    "color": "ffffff",
+    "description": "빌드, 패키지 매니저 설정 등"
+  },
+  {
+    "name": "bug",
+    "color": "d73a4a",
+    "description": "버그 리포트"
+  },
+  {
+    "name": "enhancement",
+    "color": "a2eeef",
+    "description": "기능 개선 요청"
+  },
+  {
+    "name": "question",
+    "color": "d876e3",
+    "description": "질문"
+  },
+  {
+    "name": "help wanted",
+    "color": "008672",
+    "description": "도움 요청"
+  },
+  {
+    "name": "good first issue",
+    "color": "7057ff",
+    "description": "초보자에게 좋은 이슈"
   }
 ]

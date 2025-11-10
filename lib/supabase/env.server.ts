@@ -20,20 +20,35 @@ const Raw = {
   SE_EPHE_PATH: process.env.SE_EPHE_PATH,
 };
 
-const Schema = z.object({
+// 기본 스키마 (ENGINE 제외)
+const BaseSchema = z.object({
   SUPABASE_URL: z.string().url(),
   SUPABASE_ANON: z.string().min(10),
   SUPABASE_SERVICE_ROLE: z.string().min(10),
   CLERK_PK: z.string().min(10),
   CLERK_SK: z.string().min(10),
-  ENGINE: z.enum(["swiss"]),
-  SWE_EXE: z.string().min(2),
-  SE_EPHE_PATH: z.string().min(2),
+  ENGINE: z.enum(["swiss", "swisseph", "dateChinese"]),
+  SWE_EXE: z.string().optional(),
+  SE_EPHE_PATH: z.string().optional(),
 });
 
-const parsed = Schema.safeParse(Raw);
+// 조건부 검증: ENGINE=swiss일 때만 SWE_EXE, SE_EPHE_PATH 필수
+const parsed = BaseSchema.safeParse(Raw);
 if (!parsed.success) {
   const issues = parsed.error.issues.map(i => `- ${i.path.join(".")}: ${i.message}`).join("\n");
   throw new Error(`ENV invalid. 아래 키를 확인하세요:\n${issues}`);
 }
-export const ENV = parsed.data;
+
+const validated = parsed.data;
+
+// ENGINE=swiss 또는 swisseph일 때 SWE_EXE, SE_EPHE_PATH 필수 검증
+if (validated.ENGINE === "swiss" || validated.ENGINE === "swisseph") {
+  if (!validated.SWE_EXE || validated.SWE_EXE.trim().length < 2) {
+    throw new Error("ENV invalid. ENGINE=swiss일 때 SWE_EXE는 필수입니다.");
+  }
+  if (!validated.SE_EPHE_PATH || validated.SE_EPHE_PATH.trim().length < 2) {
+    throw new Error("ENV invalid. ENGINE=swiss일 때 SE_EPHE_PATH는 필수입니다.");
+  }
+}
+
+export const ENV = validated;

@@ -49,7 +49,7 @@ pnpm lint
      - RLS 정책이 `auth.jwt()->>'sub'`로 Clerk user ID 확인
    - `server.ts`: Server Component/Server Action용 (createClerkSupabaseClient)
      - 서버 사이드에서 Clerk 인증 사용
-   - `service-role.ts`: 관리자 권한 작업용 (SUPABASE_SERVICE_ROLE_KEY 사용)
+   - `@/lib/supabase-admin`: 관리자 권한 작업용 (SUPABASE_SERVICE_ROLE_KEY 사용)
      - RLS 우회, 서버 사이드 전용
    - `client.ts`: 인증 불필요한 공개 데이터용
      - anon key만 사용, RLS 정책이 `to anon`인 데이터만 접근
