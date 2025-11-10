@@ -201,9 +201,7 @@ export function BaziForm({ onSubmit }: BaziFormProps) {
                   </FormControl>
                   <SelectContent>
                     <SelectItem value="solar">양력</SelectItem>
-                    <SelectItem value="lunar" disabled>
-                      음력 (준비 중)
-                    </SelectItem>
+                    <SelectItem value="lunar">음력</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />

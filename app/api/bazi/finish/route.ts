@@ -31,8 +31,8 @@ export async function POST(req: NextRequest) {
     const ephe = process.env.SE_EPHE_PATH!;
     if (!exe || !ephe) throw new Error("SWE_EXE/SE_EPHE_PATH missing");
 
-    // UT 변환 (local_iso - tz_offset_min)
-    const dtLocal = new Date(rq.local_iso);
+    // UT 변환 (local_wall_iso - tz_offset_min)
+    const dtLocal = new Date(rq.local_wall_iso);
     const ut = new Date(dtLocal.getTime() - (rq.tz_offset_min ?? 0) * 60000);
     const dd = String(ut.getUTCDate()).padStart(2, "0");
     const mm = String(ut.getUTCMonth() + 1).padStart(2, "0");
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
     const result_json = {
       request_id,
       ut: ut.toISOString(),
-      lon: rq.lon, lat: rq.lat, tzid: rq.tzid,
+      lon: rq.lon_deg, lat: rq.lat_deg, tzid: rq.tzid,
       solarLongitude,
       // TODO: 실제 사주 계산 로직으로 교체
       pillars_demo: { year: "갑자", month: "갑자", day: "갑자", hour: "갑자" },

@@ -16,21 +16,21 @@ export interface TimeCorrectionResult {
 
 /**
  * 지역 좌표를 기반으로 시간 보정 계산
- * 
+ *
  * @param lon 경도 (동경은 양수)
  * @param lat 위도 (북위는 양수)
  * @returns 시간 보정 결과
- * 
+ *
  * 참고: 정확한 계산을 위해서는 EoT(Equation of Time) 계산이 필요하지만,
  * 여기서는 간단한 경도 보정만 적용합니다.
  * 실제 구현에서는 날짜에 따른 EoT 값을 계산해야 합니다.
  */
 export function calculateTimeCorrection(
   lon: number,
-  lat: number
+  lat: number,
 ): TimeCorrectionResult {
-  // 한국 표준시 기준 경도: 127.5°E (동경 127도 30분)
-  const standardMeridian = 127.5;
+  // 한국 표준시 기준 경도: 135°E (UTC+9 = 15° × 9시간)
+  const standardMeridian = 135;
 
   // 경도 차이 계산 (도 단위)
   const lonDiff = lon - standardMeridian;
@@ -56,4 +56,3 @@ export function calculateTimeCorrection(
     correctionFormatted,
   };
 }
-

@@ -61,6 +61,15 @@ export function CitySearch({
     onSelect(city);
   };
 
+  const handleInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    setOpen(true);
+  };
+
+  const handleInputFocus = () => {
+    setOpen(true);
+  };
+
   return (
     <div className={cn("space-y-2", className)}>
       <Popover open={open} onOpenChange={setOpen}>
@@ -74,13 +83,25 @@ export function CitySearch({
                 setSearchQuery(e.target.value);
                 setOpen(true);
               }}
-              onFocus={() => setOpen(true)}
+              onFocus={handleInputFocus}
+              onClick={handleInputClick}
               className="pr-10"
             />
             <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
           </div>
         </PopoverTrigger>
-        <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+        <PopoverContent
+          className="w-[--radix-popover-trigger-width] p-0"
+          align="start"
+          onOpenAutoFocus={(e) => {
+            // CommandInput에 자동 포커스
+            e.preventDefault();
+            const commandInput = e.currentTarget.querySelector('input[type="search"]') as HTMLInputElement;
+            if (commandInput) {
+              setTimeout(() => commandInput.focus(), 0);
+            }
+          }}
+        >
           <Command>
             <CommandInput
               placeholder="도시명을 검색하세요..."

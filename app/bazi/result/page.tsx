@@ -7,8 +7,8 @@
  */
 
 import { BaziResult } from "@/components/bazi/bazi-result";
-import { createServiceRoleClient } from "@/lib/supabase/service-role";
-import { getEngine } from "@/engine";
+import { getServiceRoleClient } from "@/lib/supabase/service-role";
+import { createEngine } from "@/engine";
 
 interface PageProps {
   searchParams: Promise<{
@@ -17,7 +17,8 @@ interface PageProps {
 }
 
 async function getBaziResult(requestId: string) {
-  const supabase = createServiceRoleClient();
+  console.log("[getBaziResult] 시작, requestId:", requestId);
+  const supabase = getServiceRoleClient();
 
   // Supabase에서 결과 조회
   const { data: result, error } = await supabase
@@ -26,12 +27,11 @@ async function getBaziResult(requestId: string) {
     .eq("request_id", requestId)
     .single();
 
-  if (error || !result) {
-    throw new Error("결과를 찾을 수 없습니다.");
-  }
+  console.log("[getBaziResult] result:", result, "error:", error);
 
-  // 결과가 아직 계산되지 않은 경우 (queued 상태)
-  if (result.status === "queued") {
+  // astro_result가 없거나 queued 상태면 직접 계산
+  if (error || !result || result.status === "queued") {
+    console.log("[getBaziResult] result가 없거나 queued 상태, 직접 계산 시작");
     // 요청 정보 가져오기
     const { data: request, error: reqError } = await supabase
       .from("astro_request")
@@ -40,33 +40,46 @@ async function getBaziResult(requestId: string) {
       .single();
 
     if (reqError || !request) {
+      console.error("[getBaziResult] astro_request 조회 실패:", reqError);
       throw new Error("요청 정보를 찾을 수 없습니다.");
     }
 
+    console.log("[getBaziResult] request 조회 성공:", request);
+
     // 엔진으로 직접 계산
-    const engine = getEngine();
+    const engine = createEngine();
     const input = {
-      localISO: request.local_iso,
+      localISO: request.local_wall_iso,
       tzid: request.tzid,
-      lon: request.lon,
-      lat: request.lat,
+      lon: request.lon_deg,
+      lat: request.lat_deg,
     };
+
+    console.log("[getBaziResult] 계산 입력:", input);
 
     const calculated = await engine.calc(input);
 
-    // 결과 업데이트
-    await supabase
-      .from("astro_result")
-      .update({
-        status: "ok",
-        result_json: calculated,
-      })
-      .eq("request_id", requestId);
+    console.log("[getBaziResult] 계산 결과:", calculated);
+
+    // astro_result가 존재하는 경우에만 업데이트
+    if (result) {
+      console.log("[getBaziResult] astro_result 업데이트 시작");
+      await supabase
+        .from("astro_result")
+        .update({
+          status: "ok",
+          result_json: calculated,
+        })
+        .eq("request_id", requestId);
+    } else {
+      console.log("[getBaziResult] astro_result가 없어 업데이트 건너뜀");
+    }
 
     return calculated;
   }
 
   // 이미 계산된 결과 반환
+  console.log("[getBaziResult] 완료된 결과 반환");
   if (result.status === "ok" && result.result_json) {
     return result.result_json as {
       yearPillar: string;
@@ -77,6 +90,7 @@ async function getBaziResult(requestId: string) {
     };
   }
 
+  console.error("[getBaziResult] 유효하지 않은 결과 상태:", result.status);
   throw new Error("결과를 가져올 수 없습니다.");
 }
 
