@@ -2,14 +2,15 @@
   "name": "saas-mini-course",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-    "predev": "node -r dotenv/config scripts/check-env.mjs",
-    "prebuild": "node -r dotenv/config scripts/check-env.mjs"
-  },
+"scripts": {
+  "dev": "next dev --turbopack",
+  "build": "next build",
+  "start": "next start",
+  "lint": "next lint",
+  "typecheck": "tsc --noEmit",
+  "predev": "node -r dotenv/config scripts/check-env.mjs",
+  "prebuild": "node -r dotenv/config scripts/check-env.mjs"
+},
   "dependencies": {
     "@clerk/backend": "^1.33.1",
     "@clerk/localizations": "^3.26.3",
