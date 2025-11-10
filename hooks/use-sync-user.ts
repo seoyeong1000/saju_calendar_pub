@@ -34,18 +34,26 @@ export function useSyncUser() {
     // 동기화 실행
     const syncUser = async () => {
       try {
+        console.log("[useSyncUser] Starting user sync...");
         const response = await fetch("/api/sync-user", {
           method: "POST",
         });
 
         if (!response.ok) {
-          console.error("Failed to sync user:", await response.text());
+          const errorText = await response.text();
+          console.error("[useSyncUser] Failed to sync user:", {
+            status: response.status,
+            statusText: response.statusText,
+            body: errorText
+          });
           return;
         }
 
+        const result = await response.json();
+        console.log("[useSyncUser] User synced successfully:", result);
         syncedRef.current = true;
       } catch (error) {
-        console.error("Error syncing user:", error);
+        console.error("[useSyncUser] Error syncing user:", error);
       }
     };
 
